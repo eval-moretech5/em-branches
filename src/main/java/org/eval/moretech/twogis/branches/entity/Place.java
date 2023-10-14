@@ -102,9 +102,9 @@ public class Place {
     @Data
     @Builder
     public static class ScheduleDay {
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
         private LocalTime from;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
         private LocalTime till;
     }
 

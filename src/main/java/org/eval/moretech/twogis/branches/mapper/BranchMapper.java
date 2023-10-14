@@ -7,6 +7,10 @@ import org.locationtech.jts.geom.Point;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.DayOfWeek;
+import java.util.HashMap;
+import java.util.Map;
+
 @Mapper(componentModel = "spring", uses = {ScheduleMapper.class, GeometryFactory.class})
 public abstract class BranchMapper {
 
@@ -30,6 +34,42 @@ public abstract class BranchMapper {
         @Mapping(source = "coordinates", target = "point"),
     })
     public abstract BranchDto map(DistancedPlace place);
+
+    public BranchScheduleDto map(Place place) {
+
+        Map<PersonType, BranchScheduleDto.ScheduleWeek> schedules = new HashMap<>();
+
+        if (Boolean.TRUE.equals(place.getServiceNaturalEntity()) && place.getNaturalEntitySchedule() != null) {
+            schedules.put(PersonType.PHYSICAL, map(place.getNaturalEntitySchedule()));
+        }
+
+        if (Boolean.TRUE.equals(place.getServiceLegalEntity()) && place.getLegalEntitySchedule() != null) {
+            schedules.put(PersonType.LEGAL, map(place.getLegalEntitySchedule()));
+        }
+
+        return BranchScheduleDto.builder()
+            .id(place.getId())
+            .schedules(schedules)
+            .build();
+    }
+
+    public BranchScheduleDto mapScheduled(DistancedPlace place) {
+
+        Map<PersonType, BranchScheduleDto.ScheduleWeek> schedules = new HashMap<>();
+
+        if (Boolean.TRUE.equals(place.getServiceNaturalEntity()) && place.getNaturalEntitySchedule() != null) {
+            schedules.put(PersonType.PHYSICAL, map(place.getNaturalEntitySchedule()));
+        }
+
+        if (Boolean.TRUE.equals(place.getServiceLegalEntity()) && place.getLegalEntitySchedule() != null) {
+            schedules.put(PersonType.LEGAL, map(place.getLegalEntitySchedule()));
+        }
+
+        return BranchScheduleDto.builder()
+            .id(place.getId())
+            .schedules(schedules)
+            .build();
+    }
 
     protected Boolean map(int source) {
         return source == 1;
@@ -63,4 +103,19 @@ public abstract class BranchMapper {
             .build();
         target.setTextSchedule(textSchedule);
     }
+
+    protected BranchScheduleDto.ScheduleWeek map(Place.ScheduleWeek scheduleWeek) {
+        BranchScheduleDto.ScheduleWeek week = new BranchScheduleDto.ScheduleWeek();
+        week.put(DayOfWeek.MONDAY, map(scheduleWeek.getMonday()));
+        week.put(DayOfWeek.TUESDAY, map(scheduleWeek.getTuesday()));
+        week.put(DayOfWeek.WEDNESDAY, map(scheduleWeek.getWednesday()));
+        week.put(DayOfWeek.THURSDAY, map(scheduleWeek.getThursday()));
+        week.put(DayOfWeek.FRIDAY, map(scheduleWeek.getFriday()));
+        week.put(DayOfWeek.SATURDAY, map(scheduleWeek.getSaturday()));
+        week.put(DayOfWeek.SUNDAY, map(scheduleWeek.getSunday()));
+        return week;
+    }
+
+    protected abstract BranchScheduleDto.ScheduleDay map(Place.ScheduleDay scheduleDay);
+
 }

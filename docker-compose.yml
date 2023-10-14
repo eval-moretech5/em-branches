@@ -1,8 +1,8 @@
 version: "3"
 services:
 
-  em-branches-postgres:
-    container_name: em-branches-postgres
+  em-postgres:
+    container_name: em-postgres
     image: postgis/postgis:16-3.4
     environment:
       POSTGRES_USER: emuser
