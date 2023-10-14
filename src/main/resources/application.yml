@@ -1,0 +1,39 @@
+server:
+  port: 8003
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/em}
+    username: ${DB_USER:emuser}
+    password: ${DB_PASSWORD:empassword}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  sql.init.mode: never
+
+vtb.api:
+  branch:
+    url: https://headless-cms3.vtb.ru/projects/atm/models/default/items/departments
+  atm:
+    url: https://online.vtb.ru/msa/api-gw/attm/attm-dictionary/atm/nearby/filtered/
+    referer: https://online.vtb.ru/map/atms/
+    radius: 15
+
+places:
+  radius: 10000
+  limit: 300
+
+atm.bank.titles:
+  "VTB": "ВТБ"
+  "OPEN": "Банк Открытие"
+  "LETO_BANK": "Лето Банк"
