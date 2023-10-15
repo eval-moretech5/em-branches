@@ -37,3 +37,21 @@ atm.bank.titles:
   "VTB": "ВТБ"
   "OPEN": "Банк Открытие"
   "LETO_BANK": "Лето Банк"
+
+
+springdoc:
+
+  api-docs.path: /places/api-docs
+
+  swagger-ui:
+    url: https://localhost/swagger-ui/
+    urls:
+      - name: Places
+        url: /places/api-docs
+        display-name: Отделения и банкоматы
+      - name: routes
+        url: /routes/api-docs
+        display-name: Маршруты
+      - name: lines
+        url: /lines/api-docs
+        display-name: Статистика очередей
